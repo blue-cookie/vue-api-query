@@ -1,6 +1,5 @@
 import Builder from './Builder';
 import StaticModel from './StaticModel';
-const merge = require('merge-deep')
 
 export default class Model extends StaticModel {
 
@@ -279,7 +278,7 @@ export default class Model extends StaticModel {
       url,
       method: 'GET'
     }).then(response => {
-      let collection = response.data.data || response.data
+      let collection = response.data.data || response.data.items || response.data
       collection = Array.isArray(collection) ? collection : [collection]
 
       collection = collection.map(c => {
@@ -291,11 +290,13 @@ export default class Model extends StaticModel {
 
       if (response.data.data !== undefined) {
         response.data.data = collection
-      } else {
-        response.data = collection
+        if (response.data.items !== undefined) {
+          response.data.items = collection
+        } else {
+          response.data = collection
+        }
+        return response.data
       }
-
-      return response.data
     })
   }
 
@@ -329,7 +330,7 @@ export default class Model extends StaticModel {
       url: this.endpoint(),
       method: 'DELETE'
     }).then(response => {
-      let self = merge(this, response.data) //Object.assign(this, response.data)
+      let self = Object.assign(this, response.data) // merge(this, response.data) //
       return self
     })
   }
@@ -344,7 +345,7 @@ export default class Model extends StaticModel {
       url: this.endpoint(),
       data: this
     }).then(response => {
-      let self = merge(this, response.data) //Object.assign(this, response.data)
+      let self = Object.assign(this, response.data) // merge(this, response.data) //
       return self
     })
   }
@@ -355,7 +356,7 @@ export default class Model extends StaticModel {
       url: this.endpoint(),
       data: this
     }).then(response => {
-      let self = merge(this, response.data) //Object.assign(this, response.data)
+      let self = Object.assign(this, response.data) // merge(this, response.data) //
       return self
     })
   }

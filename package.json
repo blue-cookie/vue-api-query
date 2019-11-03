@@ -49,6 +49,5 @@
     "jest": "^24.1.0"
   },
   "dependencies": {
-    "merge-deep": "^3.0.2"
   }
 }
