@@ -303,7 +303,7 @@ export default class Model extends StaticModel {
   $get() {
     return this
       .get()
-      .then(response => response.data || response)
+      .then(response => response.data || response.items || response)
   }
 
   /**
