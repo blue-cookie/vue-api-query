@@ -290,13 +290,15 @@ export default class Model extends StaticModel {
 
       if (response.data.data !== undefined) {
         response.data.data = collection
+
+      } else{
         if (response.data.items !== undefined) {
           response.data.items = collection
         } else {
           response.data = collection
         }
-        return response.data
       }
+      return response.data
     })
   }
 
