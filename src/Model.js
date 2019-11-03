@@ -1,5 +1,6 @@
 import Builder from './Builder';
 import StaticModel from './StaticModel';
+const merge = require('merge-deep')
 
 export default class Model extends StaticModel {
 
@@ -319,6 +320,20 @@ export default class Model extends StaticModel {
     }).then(response => response)
   }
 
+  deleteReturn() {
+    if (!this.hasId()) {
+      throw new Error('This model has a empty ID.')
+    }
+
+    return this.request({
+      url: this.endpoint(),
+      method: 'DELETE'
+    }).then(response => {
+      let self = merge(this, response.data) //Object.assign(this, response.data)
+      return self
+    })
+  }
+
   save() {
     return this.hasId() ? this._update() : this._create()
   }
@@ -329,7 +344,7 @@ export default class Model extends StaticModel {
       url: this.endpoint(),
       data: this
     }).then(response => {
-      let self = Object.assign(this, response.data)
+      let self = merge(this, response.data) //Object.assign(this, response.data)
       return self
     })
   }
@@ -340,7 +355,7 @@ export default class Model extends StaticModel {
       url: this.endpoint(),
       data: this
     }).then(response => {
-      let self = Object.assign(this, response.data)
+      let self = merge(this, response.data) //Object.assign(this, response.data)
       return self
     })
   }
